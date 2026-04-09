@@ -3,7 +3,6 @@
 //
 import Foundation
 import MLX
-import MLXFFT
 import MLXNN
 
 // Hanning window implementation to replace np.hanning
@@ -101,7 +100,7 @@ func mlxStft(
 
   let frames = MLX.asStrided(xArray, shape, strides: strides)
 
-  let spec = MLXFFT.rfft(frames * w)
+  let spec = MLX.rfft(frames * w)
   return spec.transposed(1, 0)
 }
 
@@ -138,7 +137,7 @@ func mlxIstft(
   let wSquared = w * w
   let totalWsquared = MLX.concatenated(Array(repeating: wSquared, count: t / winLen))
 
-  let output = MLXFFT.irfft(xTransposed, axis: 1) * w
+  let output = MLX.irfft(xTransposed, axis: 1) * w
 
   var outputs: [MLXArray] = []
   var windowSums: [MLXArray] = []
